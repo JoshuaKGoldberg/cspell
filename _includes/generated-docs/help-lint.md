@@ -29,7 +29,7 @@ Options:
                                checked and the configuration.
   --locale <locale>            Set language locales. i.e. "en,fr" for English
                                and French, or "en-GB" for British English.
-  --language-id <language>     Force programming language for unknown
+  --language-id <file-type>    Force programming language for unknown
                                extensions. i.e. "php" or "scala"
   --words-only                 Only output the words not found in the
                                dictionaries.
@@ -41,6 +41,8 @@ Options:
   --file-list <path or stdin>  Specify a list of files to be spell checked. The
                                list is filtered against the glob file patterns.
                                Note: the format is 1 file path per line.
+  --file [file...]             Specify files to spell check. They are filtered
+                               by the [globs...].
   --no-issues                  Do not show the spelling errors.
   --no-progress                Turn off progress messages
   --no-summary                 Turn off summary message in console.
@@ -59,7 +61,8 @@ Options:
   --no-cache                   Do not use cache.
   --cache-reset                Reset the cache file.
   --cache-strategy <strategy>  Strategy to use for detecting changed files.
-                               (choices: "metadata", "content")
+                               (choices: "content", "metadata", default:
+                               "content")
   --cache-location <path>      Path to the cache file or directory. (default:
                                ".cspellcache")
   --dot                        Include files and directories starting with `.`
@@ -70,14 +73,15 @@ Options:
   --gitignore-root <path>      Prevent searching for .gitignore files past
                                root.
   --validate-directives        Validate in-document CSpell directives.
-  --no-validate-directives     Do not validate in-document CSpell directives.
-  --no-color                   Turn off color.
   --color                      Force color.
+  --no-color                   Turn off color.
   --no-default-configuration   Do not load the default configuration and
                                dictionaries.
   --debug                      Output information useful for debugging
                                cspell.json files.
   --reporter <module|path>     Specify one or more reporters to use.
+  --issue-template [template]  Use a custom issue template. See --help
+                               --issue-template for details.
   -h, --help                   display help for command
 
 More Examples:
@@ -92,6 +96,13 @@ More Examples:
 
     cspell . --reporter ./<path>/reporter.cjs
         Use a custom reporter. See API for details.
+
+    cspell "*.md" --exclude CHANGELOG.md --files README.md CHANGELOG.md
+        Spell check only check "README.md" but NOT "CHANGELOG.md".
+
+    cspell "/*.md" --no-must-find-files --files $FILES
+        Only spell check the "/*.md" files in $FILES,
+        where $FILES is a shell variable that contains the list of files.
 
 References:
     https://cspell.org
